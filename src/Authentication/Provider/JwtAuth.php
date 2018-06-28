@@ -2,6 +2,7 @@
 
 namespace Drupal\jwt\Authentication\Provider;
 
+use Drupal\jwt\Authentication\JwtGeneratorInterface;
 use Drupal\jwt\Transcoder\JwtTranscoderInterface;
 use Drupal\jwt\Transcoder\JwtDecodeException;
 use Drupal\jwt\Authentication\Event\JwtAuthGenerateEvent;
@@ -18,7 +19,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 /**
  * JWT Authentication Provider.
  */
-class JwtAuth implements AuthenticationProviderInterface {
+class JwtAuth implements AuthenticationProviderInterface, JwtGeneratorInterface {
 
   /**
    * The user auth service.
@@ -102,10 +103,7 @@ class JwtAuth implements AuthenticationProviderInterface {
   }
 
   /**
-   * Generate a new JWT token calling all event handlers.
-   *
-   * @return string|bool
-   *   The encoded JWT token. False if there is a problem encoding.
+   * {@inheritdoc}
    */
   public function generateToken() {
     $event = new JwtAuthGenerateEvent(new JsonWebToken());
